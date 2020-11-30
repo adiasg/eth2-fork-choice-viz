@@ -268,6 +268,6 @@ def get_fork_choice_data():
             "finality_checkpoints": finality_checkpoints
         }
     else:
-        logging.warn("head_before and head_after do not match."
+        logging.warn("head_before and head_after do not match. "
                      f"head_before: {head_before}, head_after: {head_before}")
         return get_fork_choice_data()

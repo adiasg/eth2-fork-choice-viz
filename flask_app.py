@@ -1,5 +1,5 @@
 from flask import Flask, render_template, jsonify
-from fork_choice_fetch import get_fork_choice_data, cache_get_fork_choice_data
+from fork_choice_fetch import cache_get_fork_choice_data
 
 app = Flask(__name__)
 

@@ -63,7 +63,7 @@ function drawSvg() {
   }
 
   function nodeClick(event, d) {
-    var node = d3.select(this);
+    var this_node = d3.select(this);
     infoDiv.transition()
       .duration(300)
       .style("opacity", 1);
@@ -73,12 +73,12 @@ function drawSvg() {
           .append('div').text("Status: " + getNodeStatus(d))
           .append('div').text("Supporting Percentage: " + (100*d.data.weight/totalBalance).toFixed(2))
           .append('div').text("Supporting Stake: " + d.data.weight + " ETH");
-    node.raise();
+    this_node.raise();
     clickedObject = d3.select(this);
   }
 
   function nodeMouseOver(event, d) {
-    var node = d3.select(this);
+    var this_node = d3.select(this);
     tooltipDiv.transition()
       .duration(300)
       .style("opacity", 1);
@@ -90,11 +90,10 @@ function drawSvg() {
             .text("Support: " + (100*d.data.weight/totalBalance).toFixed(2) + "%")
             .append('span').attr("class", "tooltip-span")
             .text("Status: " + getNodeStatus(d));
-    node.raise();
+    this_node.raise();
   }
 
   function nodeMouseMove(event, d) {
-    var node = d3.select(this);
     tooltipDiv.style("left", (event.pageX ) + "px")
               .style("top", (event.pageY) + "px");
   }
@@ -105,7 +104,6 @@ function drawSvg() {
       .duration(300)
       .style("opacity", 1e-6);
     d3.selectAll(".tooltip-span").remove();
-    this_node.lower();
     node.raise();
     if(clickedObject) {
       clickedObject.raise();
