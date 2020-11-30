@@ -51,8 +51,11 @@ def get_current_slot():
     genesis_time = cache_get_genesis_time()
     current_time = int(time.time())
     if current_time < genesis_time:
+        logging.debug("current_time < genesis_time")
         return -1
-    return (current_time - genesis_time)//SECONDS_PER_SLOT
+    current_slot = (current_time - genesis_time)//SECONDS_PER_SLOT
+    logging.debug(f"current_slot: {current_slot}")
+    return current_slot
 
 
 def cache_get_total_balance(finalized_epoch):
