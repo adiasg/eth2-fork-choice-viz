@@ -6,12 +6,29 @@ body {
   background-color: #000;
 }
 
-.node {
-  cursor: pointer;
+@media (max-width: 767px) {
+  .hidden-mobile {
+    display: none;
+  }
 }
 
-.node rect {
+.node-final {
+  stroke: royalblue;
+  stroke-width: 2px;
+}
+
+.node-justified {
+  stroke: deeppink;
+  stroke-width: 1px;
+}
+
+.node-pending {
+  stroke: black;
   stroke-width: 0.5px;
+}
+
+.node {
+  cursor: pointer;
 }
 
 .node:active {
@@ -70,8 +87,9 @@ div.info-box {
   left: 5px;
   width: 98%;
   padding-left: 8px;
-  padding-right: 80px;
+  padding-right: 8px;
   padding-top: 8px;
+  margin-right: 10px;
   z-index : 998;
 }
 
@@ -90,6 +108,7 @@ div.info-box {
   background-color: darkslateblue;
   border: none;
   color: white;
+  word-wrap: break-word;
   padding: 10px 10px;
   text-align: left;
   display: block;

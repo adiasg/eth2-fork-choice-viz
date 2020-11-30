@@ -127,13 +127,11 @@ function drawSvg() {
   const nodeHeight = 1.5;
 
   node.append("rect")
-    .attr("class", d => d.data.index == 0 ? "node-root" : "node-non-root" )
+    .attr("class", d => (d.data.index == 0 ? "node-root" : "node-non-root") + " node-" + d.data.status )
     .attr("width", d => nodeWidth(d)+"em")
     .attr("x", d => -nodeWidth(d)/2+"em")
     .attr("height", nodeHeight+"em")
     .attr("y", d => -nodeHeight/2 + "em")
-    .style("stroke", d => d.data.status == "final" ? "royalblue" : (d.data.status == "justified" ? "deeppink" : "black"))
-    .style("stroke-width", d => d.data.status == "pending" ? "1px" : "2px")
     .style("fill", d => getColor(d.data.weight/totalBalance));
 
     if(!hideLabel) {

@@ -8,7 +8,7 @@ import yaml
 with open("/app/config.yml", "r") as config_file:
     cfg = yaml.safe_load(config_file)
 logging.basicConfig(format='%(asctime)s -- %(levelname)s -- %(message)s')
-logging.getLogger().setLevel(logging.DEBUG)
+logging.getLogger().setLevel(logging.INFO)
 r = redis.Redis(host='redis')
 # ETH2_API is the Eth2 beacon node's HTTP endpoint
 ETH2_API = cfg["eth2_api"]

@@ -20,7 +20,7 @@
         <div class="palette-panel">Fin. Epoch: {{fc_data["finality_checkpoints"]["finalized"]["epoch"]}}</div>
         <div class="palette-panel">Just. Epoch: {{fc_data["finality_checkpoints"]["current_justified"]["epoch"]}}</div>
       </div>
-      <div class="palette-box" style="float: left;">
+      <div class="palette-box hidden-mobile" style="float: left; max-width: 40%;">
         <div class="palette-panel">Head Root: {{fc_data["current_head"]["root"]}}</div>
         <div class="palette-panel">Fin. Root: {{fc_data["finality_checkpoints"]["finalized"]["root"]}}</div>
       </div>
