@@ -1,0 +1,14 @@
+# Eth2 API endpoint
+eth2_api:
+
+# Hostname for Redis server
+redis: redis
+
+# uwsgi server configuration
+uwsgi:
+  chdir: app
+  wsgi-file: flask_app.py
+  callable: app
+  http: 0.0.0.0:80
+  processes: 1
+  threads: 1

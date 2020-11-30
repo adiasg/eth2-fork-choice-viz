@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="static/style.css" type="text/css">
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.js" charset="utf-8"></script>
+    <script type="text/javascript">
+      const treeData = JSON.parse('{{ fc_data["proto_array"] | tojson | safe}}');
+      const totalBalance = {{ fc_data["total_balance"] }};
+    </script>
+    <script type="text/javascript" src="static/script.js" charset="utf-8" defer></script>
+    <title>Fork Choice Visualizer</title>
+  </head>
+  <body onresize="drawSvg()">
+
+    <div class="palette">
+      <div class="palette-box" style="float: left;">
+        <div class="palette-panel">Curr. Slot: {{fc_data["current_slot"] | int }}</div>
+        <div class="palette-panel">Curr. Epoch: {{(fc_data["current_slot"]//32) | int}}</div>
+        <div class="palette-panel">Fin. Epoch: {{fc_data["finality_checkpoints"]["finalized"]["epoch"]}}</div>
+        <div class="palette-panel">Just. Epoch: {{fc_data["finality_checkpoints"]["current_justified"]["epoch"]}}</div>
+      </div>
+      <div class="palette-box" style="float: left;">
+        <div class="palette-panel">Head Root: {{fc_data["current_head"]["root"]}}</div>
+        <div class="palette-panel">Fin. Root: {{fc_data["finality_checkpoints"]["finalized"]["root"]}}</div>
+      </div>
+      <div class="palette-box" style="float: right;">
+        <button class="palette-button" id="toggle-label">Toggle Labels</button>
+        <button class="palette-button" id="reset">Reset View</button>
+        <button class="palette-button" id="redraw-tree">Redraw (Tree)</button>
+        <button class="palette-button" id="redraw-cluster">Redraw (Cluster)</button>
+      </div>
+    </div>
+
+    <div class="grafitti">
+      eth2.ninja
+    </div>
+
+  </body>
+</html>
