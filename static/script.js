@@ -3,6 +3,7 @@ var graphStyle = d3.tree();
 var hideLabel = false;
 var clickedObject = null;
 var fcDataStore = {"proto_array": {}, "total_balance": 0};
+var reloadFreq = 6000;
 
 const tooltipDiv = d3.select("body").append("div")
             .attr("class", "tooltip")
@@ -154,7 +155,6 @@ function drawSvg(fcData) {
 }
 
 
-var reloader = window.setInterval(loadSvg, 1000);
 function loadSvg() {
   fetch(window.location.href+"data")
     .then(response => {
@@ -176,6 +176,7 @@ function loadSvg() {
 }
 
 loadSvg();
+var reloader = window.setInterval(loadSvg, reloadFreq);
 
 document.getElementById("toggle-label").onclick = () => {
   hideLabel = !hideLabel;
@@ -196,7 +197,7 @@ document.getElementById("auto-reload").onclick = () => {
   button = document.getElementById("auto-reload");
   if(reloader==0){
     button.className = "palette-button-enabled";
-    reloader = window.setInterval(loadSvg, 1000);
+    reloader = window.setInterval(loadSvg, reloadFreq);
   }
   else {
     button.className = "palette-button";
