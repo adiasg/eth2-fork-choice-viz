@@ -1,6 +1,8 @@
 const margin = {top: 20, right: 90, bottom: 30, left: 90};
 var graphStyle = d3.tree();
 var hideLabel = false;
+var clickedObject = null;
+var fcDataStore = {"proto_array": {}, "total_balance": 0};
 
 const tooltipDiv = d3.select("body").append("div")
             .attr("class", "tooltip")
@@ -16,16 +18,23 @@ function getColor(value) {
   return ["hsl(", hue, ",60%,50%)"].join("");
 }
 
-var clickedObject = null;
-
-function drawSvg() {
+function drawSvg(fcData) {
+  var treeData = fcData.proto_array;
+  var totalBalance = fcData.total_balance;
+  fcDataStore = fcData;
   d3.select("svg").remove();
+
+  document.getElementById("current-slot").textContent = fcData.current_slot;
+  document.getElementById("current-epoch").textContent = Math.floor(fcData.current_slot/32);
+  document.getElementById("finalized-epoch").textContent = fcData.finality_checkpoints.finalized.epoch;
+  document.getElementById("justified-epoch").textContent = fcData.finality_checkpoints.current_justified.epoch;
+  document.getElementById("head-root").textContent = fcData.current_head.root;
+  document.getElementById("finalized-root").textContent = fcData.finality_checkpoints.finalized.root;
 
   var width  = window.innerWidth - margin.left - margin.right,
       height = 0.85*window.innerHeight - margin.top - margin.bottom;
 
   const treemap = graphStyle.size([height, width]);
-
   nodes = d3.hierarchy(treeData, d => d.children);
   nodes = treemap(nodes);
 
@@ -121,7 +130,7 @@ function drawSvg() {
       .on("mouseout", nodeMouseOut);
 
   function nodeWidth(d) {
-    return Math.floor(Math.log10(d.data.slot))
+    return Math.max(1, Math.floor(Math.log10(d.data.slot)));
   }
 
   const nodeHeight = 1.5;
@@ -144,19 +153,54 @@ function drawSvg() {
 
 }
 
-drawSvg();
+
+var reloader = window.setInterval(loadSvg, 1000);
+function loadSvg() {
+  fetch(window.location.href+"data")
+    .then(response => {
+      console.log("GET " + window.location.href+"data" + " returned status: " + response.status);
+      if(response.status != 200) {
+        console.log("Something failed. Response text: " + response.text());
+        treeData = {};
+        totalBalance = 0;
+      }
+      return fc_data = response.json();
+    })
+    .then(fc_data => {
+      if(typeof fc_data !== 'undefined') {
+        return fc_data;
+      }
+      return {"proto_array": {}, "total_balance": 0};
+    })
+    .then(fc_data => drawSvg(fc_data));
+}
+
+loadSvg();
 
 document.getElementById("toggle-label").onclick = () => {
   hideLabel = !hideLabel;
-  drawSvg();
+  drawSvg(fcDataStore);
 };
 
 document.getElementById("redraw-tree").onclick = () => {
   graphStyle = d3.tree();
-  drawSvg();
+  drawSvg(fcDataStore);
 };
 
 document.getElementById("redraw-cluster").onclick = () => {
   graphStyle = d3.cluster();
-  drawSvg();
+  drawSvg(fcDataStore);
+};
+
+document.getElementById("auto-reload").onclick = () => {
+  button = document.getElementById("auto-reload");
+  if(reloader==0){
+    button.className = "palette-button-enabled";
+    reloader = window.setInterval(loadSvg, 1000);
+  }
+  else {
+    button.className = "palette-button";
+    window.clearInterval(reloader);
+    reloader = 0;
+  }
 };

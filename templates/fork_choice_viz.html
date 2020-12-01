@@ -5,10 +5,6 @@
     {% include "analytics.html" ignore missing %}
     <link rel="stylesheet" href="static/style.css" type="text/css">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.js" charset="utf-8"></script>
-    <script type="text/javascript">
-      const treeData = JSON.parse('{{ fc_data["proto_array"] | tojson | safe}}');
-      const totalBalance = {{ fc_data["total_balance"] }};
-    </script>
     <script type="text/javascript" src="static/script.js" charset="utf-8" defer></script>
     <title>Fork Choice Visualizer</title>
   </head>
@@ -16,16 +12,17 @@
 
     <div class="palette">
       <div class="palette-box" style="float: left;">
-        <div class="palette-panel">Curr. Slot: {{fc_data["current_slot"] | int }}</div>
-        <div class="palette-panel">Curr. Epoch: {{(fc_data["current_slot"]//32) | int}}</div>
-        <div class="palette-panel">Fin. Epoch: {{fc_data["finality_checkpoints"]["finalized"]["epoch"]}}</div>
-        <div class="palette-panel">Just. Epoch: {{fc_data["finality_checkpoints"]["current_justified"]["epoch"]}}</div>
+        <div class="palette-panel">Curr. Slot: <span id="current-slot"></span></div>
+        <div class="palette-panel">Curr. Epoch: <span id="current-epoch"></span></div>
+        <div class="palette-panel">Fin. Epoch: <span id="finalized-epoch"></span></div>
+        <div class="palette-panel">Just. Epoch: <span id="justified-epoch"></span></div>
       </div>
       <div class="palette-box hidden-mobile" style="float: left; max-width: 40%;">
-        <div class="palette-panel">Head Root: {{fc_data["current_head"]["root"]}}</div>
-        <div class="palette-panel">Fin. Root: {{fc_data["finality_checkpoints"]["finalized"]["root"]}}</div>
+        <div class="palette-panel">Head Root: <span id="head-root"></div>
+        <div class="palette-panel">Fin. Root: <span id="finalized-root"></div>
       </div>
       <div class="palette-box" style="float: right;">
+        <button class="palette-button-enabled" id="auto-reload">Auto-Reload</button>
         <button class="palette-button" id="toggle-label">Toggle Labels</button>
         <button class="palette-button" id="reset">Reset View</button>
         <button class="palette-button" id="redraw-tree">Redraw (Tree)</button>

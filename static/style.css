@@ -121,7 +121,7 @@ div.info-box {
   background-color: royalblue;
   border: none;
   color: white;
-  padding: 10px 20px;
+  padding: 5px 10px;
   text-align: center;
   display: inline-block;
   font-size: 16px;
@@ -133,6 +133,19 @@ div.info-box {
 .palette-button:hover {
   background-color: darkslateblue;
   color: white;
+}
+
+.palette-button-enabled {
+  background-color: darkslateblue;
+  border: none;
+  color: white;
+  padding: 5px 10px;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  z-index : 999;
 }
 
 .grafitti {
