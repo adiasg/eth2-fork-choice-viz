@@ -205,3 +205,7 @@ document.getElementById("auto-reload").onclick = () => {
     reloader = 0;
   }
 };
+
+function onResize() {
+  drawSvg(fcDataStore);
+}
