@@ -1,6 +1,6 @@
 # Eth2.0 Fork Choice Visualizer
 
-This is a Eth2.0 fork choice visualizer that plots data from a [Lighthouse](https://github.com/sigp/lighthouse) beacon node's [`/lighthouse/proto_array`](https://lighthouse-book.sigmaprime.io/api-lighthouse.html) HTTP endpoint.
+This is an Eth2.0 fork choice visualizer that plots data from a [Lighthouse](https://github.com/sigp/lighthouse) beacon node's [`/lighthouse/proto_array`](https://lighthouse-book.sigmaprime.io/api-lighthouse.html) HTTP endpoint.
 
 A live demo is available at [eth2.ninja](http://eth2.ninja).
 
