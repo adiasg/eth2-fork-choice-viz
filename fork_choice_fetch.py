@@ -9,7 +9,7 @@ with open("/app/config.yml", "r") as config_file:
     cfg = yaml.safe_load(config_file)
 logging.basicConfig(format='%(asctime)s -- %(levelname)s -- %(message)s')
 logging.getLogger().setLevel(logging.INFO)
-r = redis.Redis(host='redis')
+r = redis.Redis(host=cfg["redis"])
 # ETH2_API is the Eth2 beacon node's HTTP endpoint
 ETH2_API = cfg["eth2_api"]
 SECONDS_PER_SLOT = 12
@@ -166,7 +166,7 @@ def cache_get_fork_choice_data():
         logging.info(f'Refreshed fork_choice_data in cache at slot: {fork_choice_data["current_slot"]}')
         return fork_choice_data
     else:
-        logging.warn("head_before and head_after do not match."
+        logging.warn("head_before and head_after do not match. "
                      f"head_before: {head_before}, head_after: {head_before}")
         return {
             "current_slot": -2,

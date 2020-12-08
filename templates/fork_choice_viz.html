@@ -3,35 +3,58 @@
   <head>
     <meta charset="utf-8">
     {% include "analytics.html" ignore missing %}
+    <link rel="stylesheet" href="static/bootstrap5/css/bootstrap.min.css" type="text/css">
+    <script type="text/javascript" src="static/bootstrap5/js/bootstrap.bundle.min.js" charset="utf-8" defer></script>
+    <script type="text/javascript" src="static/d3/d3.min.js" charset="utf-8"></script>
     <link rel="stylesheet" href="static/style.css" type="text/css">
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/6.2.0/d3.js" charset="utf-8"></script>
     <script type="text/javascript" src="static/script.js" charset="utf-8" defer></script>
-    <title>Fork Choice Visualizer</title>
+    <title>{{title}}</title>
   </head>
   <body onresize="onResize()">
 
-    <div class="palette">
-      <div class="palette-box" style="float: left;">
-        <div class="palette-panel">Curr. Slot: <span id="current-slot"></span></div>
-        <div class="palette-panel">Curr. Epoch: <span id="current-epoch"></span></div>
-        <div class="palette-panel">Fin. Epoch: <span id="finalized-epoch"></span></div>
-        <div class="palette-panel">Just. Epoch: <span id="justified-epoch"></span></div>
-      </div>
-      <div class="palette-box hidden-mobile" style="float: left; max-width: 40%;">
-        <div class="palette-panel">Head Root: <span id="head-root"></div>
-        <div class="palette-panel">Fin. Root: <span id="finalized-root"></div>
-      </div>
-      <div class="palette-box" style="float: right;">
+    <div class="container-fluid">
+      <div class="d-flex palette-panel" style="float: right;">
         <button class="palette-button-enabled" id="auto-reload">Auto-Reload</button>
         <button class="palette-button" id="toggle-label">Toggle Labels</button>
         <button class="palette-button" id="reset">Reset View</button>
         <button class="palette-button" id="redraw-tree">Redraw (Tree)</button>
         <button class="palette-button" id="redraw-cluster">Redraw (Cluster)</button>
       </div>
+      <div class="container" style="float: left;">
+        <div class="d-flex flex-column palette-panel" style="float: left;">
+          <div class="palette-badge">Curr. Slot : <span id="current-slot"></span></div>
+          <div class="palette-badge">Curr. Epoch: <span id="current-epoch"></span></div>
+          <div class="palette-badge">Finl. Epoch: <span id="finalized-epoch"></span></div>
+          <div class="palette-badge">Just. Epoch: <span id="justified-epoch"></span></div>
+        </div>
+        <div class="d-none d-lg-block">
+          <div class="d-flex flex-column palette-panel" style="float: left;">
+            <div class="palette-badge">Head Root : <span id="head-root"></div>
+            <div class="palette-badge">Finl. Root: <span id="finalized-root"></div>
+            <div class="palette-badge">Just. Root: <span id="justified-root"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="container-fluid" id="svg-box">
+
+      </div>
+
+      <div class="d-flex flex-column grafitti">
+        {% if graffiti %}
+        <div style="display: block; border-bottom: 1px solid white;">
+          {{graffiti}}
+        </div>
+        {% endif %}
+        <div style="display: block; text-align: center;">
+          <a href="https://github.com/adiasg/eth2-fork-choice-viz">GitHub</a>
+        </div>
+      </div>
+
+      <div class="d-flex flex-column info-box" id="info-box">
+
+      </div>
     </div>
 
-    <div class="grafitti">
-      eth2.ninja
-    </div>
   </body>
 </html>

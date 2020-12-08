@@ -1,6 +1,12 @@
 # Eth2 API endpoint
 eth2_api:
 
+# Page Title
+page_title:
+
+# Optional Graffiti
+graffiti:
+
 # Hostname for Redis server
 redis: redis
 

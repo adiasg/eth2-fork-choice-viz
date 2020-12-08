@@ -6,12 +6,6 @@ body {
   background-color: #000;
 }
 
-@media (max-width: 767px) {
-  .hidden-mobile {
-    display: none;
-  }
-}
-
 .node-final {
   stroke: royalblue;
   stroke-width: 2px;
@@ -34,6 +28,7 @@ body {
 .node:active {
   stroke: dodgerblue;
   stroke-width: 1px;
+  cursor: grabbing;
 }
 
 .tree-link {
@@ -49,11 +44,11 @@ body {
 div.tooltip {
     position: absolute;
     text-align: center;
-    width: 12em;
-    height: 5em;
     padding: 8px;
     font: 1em "Courier New";
     background: lightgray;
+    display: flex;
+    flex-direction: column;
     border: gray;
     border-radius: 5px;
 }
@@ -63,111 +58,127 @@ div.tooltip {
   font: 1em "Courier New";
 }
 
-div.info-box {
+.info-box {
     position: absolute;
     bottom: 10px;
-    right: 25%;
+    right: 0%;
     z-index : 999;
     text-align: left;
-    width: 50%;
-    height: 14%;
+    max-width: 65%;
+    margin: 20px;
     padding: 8px;
     font: 1em "Courier New";
+    word-wrap: break-word;
     background: lightgray;
     border: solid 1px #aaa;
     border-radius: 3px;
-    display: block;
+    opacity: 0.000001;
     z-index : 999;
 }
 
-
-.palette {
-  position: absolute;
-  top: 20px;
-  left: 5px;
-  width: 98%;
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-top: 8px;
-  margin-right: 10px;
-  z-index : 998;
+.info-box > * {
+  display: block;
+  word-wrap: break-word;
 }
 
-.palette-box {
+.palette {
+  padding: 8px;
+  margin: 10px;
+  color: white;
+  word-wrap: break-word;
+  font-size: 16px;
+  z-index: 1;
+}
+
+.palette-panel {
   border-color: white;
+  color: white;
+  background-color: transparent;
+  border-radius: 0;
   border-width: 1px;
   border-style: solid;
   margin: 10px 5px;
   padding: 5px;
-  /* display: inline-block;
-  vertical-align: top; */
-  z-index : 998;
+  z-index: 1;
 }
 
-.palette-panel {
+.palette-badge {
+  padding: 5px 10px;
+  margin: 4px 2px;
+  border-radius: 0;
   background-color: darkslateblue;
   border: none;
-  color: white;
-  word-wrap: break-word;
-  padding: 10px 10px;
   text-align: left;
+  word-wrap: break-word;
   display: block;
-  font-size: 16px;
-  margin: 4px 2px;
-  z-index : 998;
 }
 
 .palette-button {
+  padding: 5px 10px;
+  margin: 4px 2px;
+  border-radius: 0;
   background-color: royalblue;
   border: none;
   color: white;
-  padding: 5px 10px;
   text-align: center;
   display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
   cursor: pointer;
-  z-index : 999;
 }
 
 .palette-button:hover {
-  background-color: darkslateblue;
-  color: white;
-}
-
-.palette-button-enabled {
+  padding: 5px 10px;
+  margin: 4px 2px;
+  border-radius: 0;
   background-color: darkslateblue;
   border: none;
   color: white;
-  padding: 5px 10px;
   text-align: center;
   display: inline-block;
-  font-size: 16px;
-  margin: 4px 2px;
   cursor: pointer;
-  z-index : 999;
+}
+
+.palette-button-enabled {
+  padding: 5px 10px;
+  margin: 4px 2px;
+  border-radius: 0;
+  background-color: darkslateblue;
+  border: none;
+  color: white;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
 }
 
 .grafitti {
   position: absolute;
   bottom: 20px;
   left: 20px;
-  width: 6em;
+  max-width: 33%;
   padding: 8px;
   color: deeppink;
-  font-size: 2em;
+  font-size: 1.5em;
+  word-break: break-all;
   border-color: white;
   border-width: 1px;
   border-style: solid;
   margin: 10px 10px;
-  z-index : 998;
 }
 
 .main-svg {
   border-color: white;
   border-width: 0.5px;
   border-style: solid;
-  margin: auto;
+  top: 0px;
+  left: 0px;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  z-index : -1;
+  cursor: grab;
+}
+
+.main-svg:active {
+  cursor: grabbing;
 }
 
 .node-label {

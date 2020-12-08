@@ -9,9 +9,7 @@ const tooltipDiv = d3.select("body").append("div")
             .attr("class", "tooltip")
             .style("opacity", 1e-6);
 
-const infoDiv = d3.select("body").append("div")
-            .attr("class", "info-box")
-            .style("opacity", 1e-6);
+const infoDiv = d3.select("#info-box");
 
 function getColor(value) {
   // value from 0 to 1
@@ -23,7 +21,8 @@ function drawSvg(fcData) {
   var treeData = fcData.proto_array;
   var totalBalance = fcData.total_balance;
   fcDataStore = fcData;
-  d3.select("svg").remove();
+  d3.select("#d3-svg").remove();
+  d3.selectAll(".tooltip-span").remove();
 
   document.getElementById("current-slot").textContent = fcData.current_slot;
   document.getElementById("current-epoch").textContent = Math.floor(fcData.current_slot/32);
@@ -31,6 +30,7 @@ function drawSvg(fcData) {
   document.getElementById("justified-epoch").textContent = fcData.finality_checkpoints.current_justified.epoch;
   document.getElementById("head-root").textContent = fcData.current_head.root;
   document.getElementById("finalized-root").textContent = fcData.finality_checkpoints.finalized.root;
+  document.getElementById("justified-root").textContent = fcData.finality_checkpoints.current_justified.root;
 
   var width  = window.innerWidth - margin.left - margin.right,
       height = 0.85*window.innerHeight - margin.top - margin.bottom;
@@ -39,12 +39,12 @@ function drawSvg(fcData) {
   nodes = d3.hierarchy(treeData, d => d.children);
   nodes = treemap(nodes);
 
-  const svg = d3.select("body").append("svg").attr("class", "main-svg"),
+  const svg = d3.select("#svg-box").append("svg").attr("class", "main-svg").attr("id", "d3-svg"),
         drawing = svg.append("g"),
         g = drawing.append("g"),
         zoomChild = svg.append("g");
-  svg.attr("width", window.innerWidth - 20)
-    .attr("height", height),
+  // svg.attr("width", "100%")
+  //   .attr("height", "100%"),
   g.attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
@@ -74,15 +74,17 @@ function drawSvg(fcData) {
 
   function nodeClick(event, d) {
     var this_node = d3.select(this);
+    infoDiv.html("");
     infoDiv.transition()
       .duration(300)
       .style("opacity", 1);
-    infoDiv.text("Block Root: " + d.data.root)
-          .append('div').text("Slot: " + d.data.slot)
-          .append('div').text("Epoch: " + Math.floor(d.data.slot/32))
-          .append('div').text("Status: " + getNodeStatus(d))
-          .append('div').text("Supporting Percentage: " + (100*d.data.weight/totalBalance).toFixed(2))
-          .append('div').text("Supporting Stake: " + d.data.weight + " ETH");
+    infoDiv
+          .append('div').attr("class", "d-flex flex-column").text("Block Root: " + d.data.root)
+          .append('div').attr("class", "d-flex flex-column").text("Slot: " + d.data.slot)
+          .append('div').attr("class", "d-flex flex-column").text("Epoch: " + Math.floor(d.data.slot/32))
+          .append('div').attr("class", "d-flex flex-column").text("Status: " + getNodeStatus(d))
+          .append('div').attr("class", "d-flex flex-column").text("Supporting Percentage: " + (100*d.data.weight/totalBalance).toFixed(2) + "%")
+          .append('div').attr("class", "d-flex flex-column").text("Supporting Stake: " + d.data.weight + " ETH");
     this_node.raise();
     clickedObject = d3.select(this);
   }
@@ -139,9 +141,9 @@ function drawSvg(fcData) {
   node.append("rect")
     .attr("class", d => (d.data.index == 0 ? "node-root" : "node-non-root") + " node-" + d.data.status )
     .attr("width", d => nodeWidth(d)+"em")
-    .attr("x", d => -nodeWidth(d)/2+"em")
     .attr("height", nodeHeight+"em")
-    .attr("y", d => -nodeHeight/2 + "em")
+    .attr("x", d => -nodeWidth(d)/2+"em")
+    .attr("y", d => -nodeHeight/2+"em")
     .style("fill", d => getColor(d.data.weight/totalBalance));
 
     if(!hideLabel) {
@@ -158,9 +160,8 @@ function drawSvg(fcData) {
 function loadSvg() {
   fetch(window.location.href+"data")
     .then(response => {
-      console.log("GET " + window.location.href+"data" + " returned status: " + response.status);
       if(response.status != 200) {
-        console.log("Something failed. Response text: " + response.text());
+        console.log("GET " + window.location.href+"data" + " returned status: " + response.status + " and text: " + response.text());
         treeData = {};
         totalBalance = 0;
       }
@@ -172,7 +173,10 @@ function loadSvg() {
       }
       return {"proto_array": {}, "total_balance": 0};
     })
-    .then(fc_data => drawSvg(fc_data));
+    .then(fc_data => drawSvg(fc_data))
+    .catch(err => {
+      console.log("fetch(\"" + window.location.href+"data\") failed with error: " + err);
+    });
 }
 
 loadSvg();
@@ -197,6 +201,7 @@ document.getElementById("auto-reload").onclick = () => {
   button = document.getElementById("auto-reload");
   if(reloader==0){
     button.className = "palette-button-enabled";
+    loadSvg();
     reloader = window.setInterval(loadSvg, reloadFreq);
   }
   else {
